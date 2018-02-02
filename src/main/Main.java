@@ -28,7 +28,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 
-public class SeleniumTest {
+public class Main {
 
    
      static WebDriver webDriver=null;
@@ -62,7 +62,7 @@ public class SeleniumTest {
         caps.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, a);
         File f = new File ("./phantomjs.exe");
         if (!f.exists()) {   
-             InputStream in = SeleniumTest.class.getResourceAsStream("phantomjs.exe");
+             InputStream in = Main.class.getResourceAsStream("phantomjs.exe");
              OutputStream out = null;
                    out=  new FileOutputStream("./phantomjs.exe");
              IOUtils.copy(in, out);
