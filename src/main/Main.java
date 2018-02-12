@@ -34,12 +34,12 @@ public class Main {
      static WebDriver webDriver=null;
     static PrintStream originalStream,dummyStream;
      public static WebDriver phantomjs(){
-         //this function work with selected phantomjs.exe from out of project !be sure phantomjs version 1.9.7!
+         //this function work with selected phantomjs.exe from out of project 
        DesiredCapabilities caps = new DesiredCapabilities();
          //caps.setJavascriptEnabled(true);
        // caps.setCapability("takesScreenshot", true);
       caps.setCapability(
-                        PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY,"path/phantomjs.exe"
+                        PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY,"./phantomjs.exe"
                                                                                   // example "C:\\Users\\x\\Desktop\\phantomjs-1.9.7-windows\\phantomjs.exe"
                     );
         String[]  a={"--ignore-ssl-errors=true","--ssl-protocol=TLSv1"};
@@ -55,8 +55,9 @@ public class Main {
        return new ChromeDriver();     
     }
     public static WebDriver phantomjsX() throws Exception {
-        //if you want to work with phantomjs at inside of jar use this function. running steps on netbeans : right click build.xml "Run target->other targets->package-for-store"
-     DesiredCapabilities caps = new DesiredCapabilities();
+        //if you want to work with phantomjs at inside(under of src/main folder) of jar use this function. running steps on netbeans : right click build.xml "Run target->other targets->package-for-store"
+         // this function need to work on
+        DesiredCapabilities caps = new DesiredCapabilities();
         
           String[]  a={"--ignore-ssl-errors=true","--ssl-protocol=TLSv1"};
         caps.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, a);
@@ -73,7 +74,7 @@ public class Main {
     
     public static void main(String[] args) throws MalformedURLException, IOException {
             try{
-       webDriver=phantomjsX(); 
+       webDriver=phantomjs(); 
            if(args.length==2)
            { if(args[0].equals("/p") && args[1]!=null)
                 { playlistParser(args[1]);
