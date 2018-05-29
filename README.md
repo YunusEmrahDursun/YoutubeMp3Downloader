@@ -2,7 +2,7 @@
 
 ## Summary 
 
-###### 1.download YoutubeMp3Downloader.jar and phantomjs.exe under store folder 
+###### 1.download YoutubeMp3Downloader.jar and phantomjs.exe under from store folder 
 ###### 2.create folder paste YoutubeMp3Downloader.jar and phantomjs.exe under this folder 
 ###### 3.write  
 ###### java -jar YoutubeMp3Downloader.jar youtubelink 
