@@ -16,6 +16,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -42,7 +43,7 @@ public class Main {
                         PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY,"./phantomjs.exe"
                                                                                   // example "C:\\Users\\x\\Desktop\\phantomjs-1.9.7-windows\\phantomjs.exe"
                     );
-        String[]  a={"--ignore-ssl-errors=true","--ssl-protocol=TLSv1"};
+        String[]  a={"--ignore-ssl-errors=true","--ssl-protocol=TLSv1","--webdriver-loglevel=NONE"};
         caps.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, a);
        return new  PhantomJSDriver(caps);
        
@@ -101,6 +102,7 @@ public class Main {
         webDriver.get("https://www.onlinevideoconverter.com/tr/mp3-converter");
              
         WebDriverWait webDriverWait=new WebDriverWait(webDriver,999999);
+       
         webDriverWait.until((i)->(executer.executeScript("return document.readyState").equals("complete")));
         System.out.println("Starting...");
          URLConnection conn;
@@ -111,7 +113,18 @@ public class Main {
              webDriver.findElement(By.id("convert1")).click();
              
              WebDriverWait webDriverWait2=new WebDriverWait(webDriver,999999);
-             webDriverWait2.until((i)->(executer.executeScript("return (document.getElementById('downloadq')!=null)+''").equals("true")));
+             System.out.println("Converting 0%...");
+              webDriverWait2.until(new Function(){
+             @Override
+               public Object apply(Object t) {
+                   String str=(String)executer.executeScript("return (document.getElementsByClassName('loader-progress')!=null && document.getElementsByClassName('loader-progress')[0].innerText).toString()");
+                   if(str!=null && !str.equals("false") && !str.equals("0%"))
+                            System.out.println("Converting "+str+"...");
+                   
+               return executer.executeScript("return (document.getElementById('downloadq')!=null)+''").equals("true");
+               }
+             });
+            // webDriverWait2.until((i)->(executer.executeScript("return (document.getElementById('downloadq')!=null)+''").equals("true")));
             
              conn = new URL(webDriver.findElement(By.id("downloadq")).getAttribute("href")).openConnection();
              is = conn.getInputStream();
@@ -121,12 +134,13 @@ public class Main {
              int len;
              while ((len = is.read(buffer)) > 0) {
                 outstream.write(buffer, 0, len);
-            }
+            }              
               outstream.close();
               webDriver.navigate().to("https://www.onlinevideoconverter.com/tr/mp3-converter");
                 WebDriverWait webDriverWait3=new WebDriverWait(webDriver,999999);
                 webDriverWait3.until((i)->(executer.executeScript("return document.readyState").equals("complete")));
       }
+        webDriver.close();
        
     }
     public static void playlistParser(String link) throws Exception{
